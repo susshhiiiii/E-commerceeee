@@ -1,16 +1,16 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
 import { Status } from "src/enum/status.enum";
 
 @Schema({ timestamps: true })
 export class Inventory{
+    @Prop()
+    name: string
+    
     @Prop({ type: Types.ObjectId, ref:'User'})
     userId: Types.ObjectId
-
-    @Prop({type:Types.ObjectId,ref:'InventoryItem'})
-    inventoryItem: Types.ObjectId[]
     
-    @Prop()
+    @Prop({default:0})
     totalsale: number
     
     @Prop()
@@ -19,3 +19,5 @@ export class Inventory{
     @Prop({enum:Status,default:Status.ACTIVE})
     status:Status
 }
+
+export const InventorySchema=SchemaFactory.createForClass(Inventory)

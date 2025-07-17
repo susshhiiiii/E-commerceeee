@@ -17,6 +17,9 @@ export class Product extends Document {
   name: string;
 
   @Prop()
+  quantity: number  
+
+  @Prop()
   markedPrice: number;
 
   @Prop()
@@ -25,10 +28,10 @@ export class Product extends Document {
   @Prop({ type: Types.ObjectId, ref: 'InventoryItem' })
   inventoryId: Types.ObjectId;
 
-  @Prop()
-  createdBy: string;
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  createdBy: Types.ObjectId;
   
-  @Prop()
+  @Prop({default:Status.ACTIVE})
   status: Status;
 }
 

@@ -6,9 +6,6 @@ import { Status } from "src/enum/status.enum";
 export class Category {
   @Prop()
   name: string;
-
-  @Prop({ type: [Types.ObjectId], ref: 'SubCategory' })
-  subCategory?:Types.ObjectId[]
     
   @Prop()
   createdBy?: string

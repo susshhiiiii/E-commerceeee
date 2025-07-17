@@ -7,7 +7,7 @@ export class VendorProfile {
   @Prop({ type:Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
-  @Prop([{ type: Types.ObjectId, ref: 'InventoryItem' }])
+  @Prop([{ type: [Types.ObjectId], ref: 'InventoryItem' }])
   inventory: Types.ObjectId[];
 
   @Prop()

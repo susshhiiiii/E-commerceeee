@@ -8,12 +8,12 @@ import { Role } from 'src/enum/role.enum';
 
 @ApiTags('Sub-category')
 @Roles(Role.ADMIN)  
+@ApiBearerAuth()
 @Controller('sub-category')
 export class SubCategoryController {
   constructor(private readonly subCategoryService: SubCategoryService) {}
 
   @Post()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Api endpoint to add sub-category for a category by admin' })
   create(@Req() req: Request, @Body() createSubCategoryDto: CreateSubCategoryDto) {
     const user=req['user']
@@ -21,28 +21,24 @@ export class SubCategoryController {
   }
 
   @Get()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Api endpoint to get all sub-category' })
   findAll() {
     return this.subCategoryService.findAll();
   }
 
   @Get(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Api endpoint to get sub-category by id' })
   findOne(@Param('id') id: string) {
     return this.subCategoryService.findOne(id);
   }
 
   @Patch()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Api endpoint to update sub-category by id' })
   update(@Param() @Body() updateSubCategoryDto: UpdateSubCategoryDto) {
     return this.subCategoryService.update(updateSubCategoryDto);
   }
 
   @Delete(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Api endpoint to delete sub-category by id' })
   remove(@Param('id') id: string) {
     return this.subCategoryService.remove(id);

@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateCateoryDto } from './dto/create-cateory.dto';
 import { UpdateCateoryDto } from './dto/update-cateory.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Category } from 'src/schema/category.schema';
+import { response } from 'express';
 
 @Injectable()
 export class CateoryService {
-  create(createCateoryDto: CreateCateoryDto) {
-    return 'This action adds a new cateory';
+
+  constructor(@InjectModel(Category.name)private categoryModel:Model<Category>){}
+  async create(createCateoryDto: CreateCateoryDto) {
+    const category = new this.categoryModel(createCateoryDto)
+    await category.save()
+    return category
   }
 
-  findAll() {
-    return `This action returns all cateory`;
+  async findAll() {
+    return await this.categoryModel.find().exec()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cateory`;
+  async findOne(id: string) {
+    const category = await this.categoryModel.findById(id).exec()
+    if (!category)
+      throw new HttpException('No category present with the entered id', 404)
+    
+    return category
   }
 
-  update(id: number, updateCateoryDto: UpdateCateoryDto) {
-    return `This action updates a #${id} cateory`;
+  async update(updateCateoryDto: UpdateCateoryDto) {
+    const { id, ...updatedCategory } = updateCateoryDto
+    
+    const category = await this.categoryModel.findById(id).exec()
+    if (!category)
+      throw new HttpException('No category present with the entered id', 404)
+
+    return await this.categoryModel.findByIdAndUpdate(id,updatedCategory,{new:true})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cateory`;
+  async remove(id: string) {
+    const category = await this.categoryModel.findById(id).exec()
+    if (!category)
+      throw new HttpException('No category present with the entered id', 404)
+
+    await this.categoryModel.findByIdAndDelete(id)
+    return {response:'Category has been successfully deleted'}
   }
 }

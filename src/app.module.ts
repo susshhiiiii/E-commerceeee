@@ -14,6 +14,7 @@ import { CardModule } from './module/card/card.module';
 import { ProductModule } from './module/product/product.module';
 import { SubCategoryModule } from './module/sub-category/sub-category.module';
 import { CateoryModule } from './module/cateory/cateory.module';
+import { InventoryModule } from './module/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { CateoryModule } from './module/cateory/cateory.module';
     ConfigModule.forRoot({
       isGlobal:true
     }),
-    UserModule, AuthModule, SeedModule, EmailModule, CustomerModule, AddressModule, CardModule, ProductModule, SubCategoryModule, CateoryModule],
+    UserModule, AuthModule, SeedModule, EmailModule, CustomerModule, AddressModule, CardModule, ProductModule, SubCategoryModule, CateoryModule, InventoryModule],
   controllers: [],
   providers: [
     {

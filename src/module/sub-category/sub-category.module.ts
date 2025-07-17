@@ -5,7 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SubCategory, SubCategorySchema } from 'src/schema/sub-category.schema';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:SubCategory.name,schema:SubCategorySchema}])],
+  imports: [
+    MongooseModule.forFeature([{ name: SubCategory.name, schema: SubCategorySchema }]),
+  ],
   controllers: [SubCategoryController],
   providers: [SubCategoryService],
 })
