@@ -11,6 +11,7 @@ import { OtpGenerator, VerifyOtp } from 'src/helpers/otp.helpers';
 import { EmailService } from 'src/email/email.service';
 import { EmailDto } from 'src/email/dto/email.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -32,8 +33,9 @@ export class AuthService {
         const user = await this.userService.findUserByEmail(loginRequest.email)
         if (!user)
             throw new HttpException('No user is found with the given id', 404)
+
         
-        if (!ComparePassword(loginRequest.password, user.password))
+        if (!await ComparePassword(loginRequest.password, user.password))
             throw new HttpException('Email and password doesnot match', 400) 
         
         const payload = {
@@ -49,7 +51,7 @@ export class AuthService {
     }
 
 
-    async loginRequestOtp(email: string) {
+    async verifyRequestOtp(email: string) {
         const user = await this.userService.findUserByEmail(email)
         if (!user)
             throw new HttpException('No user found with the given mail', 404)
@@ -66,7 +68,7 @@ export class AuthService {
         }
 
         try{
-            this.emailService.sendEmail(emailOptions,otp)
+            //this.emailService.sendEmail(emailOptions,otp)
             return  {response :'OTP has been sent to your id'}
         }
         catch {
@@ -74,26 +76,24 @@ export class AuthService {
         }
     }  
     
-    async loginWithOtp(verifyOtpDto:VerifyOtpDto) {
-        const user =await this.userService.findUserByEmail(verifyOtpDto.email)
-        
+    async verifyWithOtp(verifyOtpDto: VerifyOtpDto) {
+        const user = await this.userService.findUserByEmail(verifyOtpDto.email)
+
         if (!verifyOtpDto.email)
             throw new HttpException('No User present with the entered id',404)
         const verify = VerifyOtp(verifyOtpDto.otp, user)
-        
+        user.otp = undefined
+        user.otpEnteredTime=undefined
         if (verify) {
-            const payload = {
-                sub: user._id,
-                email: user.email,
-                username:user.username,
-                role: user.role,            
-            }
-
+            user.isVerified = true
+            user.otp = undefined
+            user.otpEnteredTime=undefined
+            await user.save()
             return {
-                accessToken:await this.jwtService.signAsync(payload)
+                response:'User is now verified**'
             }
         }
-        throw new HttpException('Email and otp doesnot match', 404)
+        throw new HttpException('Email and otp doesnot match or otp expired', 404)
         
     }
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -7,6 +7,7 @@ import { Public } from 'src/decorator/public.decorator';
 import { RequestOtpDto } from './dto/request-otp.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
 
@@ -25,18 +26,18 @@ export class AuthController {
         return this.authService.loginUser(loginUser)
     }
 
-    @Post('login/request-otp')
+    @Post('request-otp')
     @Public()
     @ApiOperation({ summary: "Api route for otp request for sigining in" })
-    loginRequestOtp(@Body()request:RequestOtpDto) {
-        return this.authService.loginRequestOtp(request.email)
+    RequestOtp(@Body()request:RequestOtpDto) {
+        return this.authService.verifyRequestOtp(request.email)
     }
 
-    @Post('login/verify-otp')
+    @Post('verify-mail-otp')
     @Public()
     @ApiOperation({ summary: 'Api route for verifying otp for signing in of the user' })
-    loginVerifyOtp(verifyOtpDto: VerifyOtpDto) {
-        return this.authService.loginWithOtp(verifyOtpDto)
+    VerifyOtp(@Body()verifyOtpDto: VerifyOtpDto) {
+        return this.authService.verifyWithOtp(verifyOtpDto)
     }
 
 }

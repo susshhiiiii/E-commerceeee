@@ -10,8 +10,8 @@ export class SubCategory {
   @Prop({ type:Types.ObjectId, ref: 'Category' })
   category: Types.ObjectId;
     
-    @Prop()
-    createdBy:string
+  @Prop({ type:Types.ObjectId, ref: 'User' })
+  createdBy: Types.ObjectId;
 
   @Prop()
   status: Status;

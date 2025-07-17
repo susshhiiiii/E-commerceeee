@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 import { Status } from "src/enum/status.enum";
 
 @Schema({ timestamps: true })
-export class Product {
+export class Product extends Document {
   @Prop()
   brand: string;
 
@@ -27,8 +27,7 @@ export class Product {
 
   @Prop()
   createdBy: string;
-
- 
+  
   @Prop()
   status: Status;
 }

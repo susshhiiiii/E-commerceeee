@@ -1,27 +1,26 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
-import { PaymentMethod } from "src/enum/paymentMethod.enum";
 import { Status } from "src/enum/status.enum";
 
 @Schema({ timestamps: true })
-export class ConsumerProfile {
+export class CustomerProfile {
   @Prop({ type:Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Cart' })
-  cart: Types.ObjectId;
+  cart?: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Order' })
-  order:Types.ObjectId;
+  order?: Types.ObjectId;
+  
+  @Prop({ type: Types.ObjectId, ref: 'Address' })
+  addresses?:Types.ObjectId[]
 
   @Prop({ type: Types.ObjectId, ref: 'Upi' })
-  upi: Types.ObjectId[];
+  upi?: Types.ObjectId[];
 
   @Prop({ type: Types.ObjectId, ref: 'Card' })
-  card: Types.ObjectId[];
-
-  @Prop({ enum: PaymentMethod })
-  paymentMethod: PaymentMethod;
+  card?: Types.ObjectId[];  
 
   @Prop()
   createdBy: string;
@@ -30,4 +29,4 @@ export class ConsumerProfile {
   status: Status;
 }
 
-export const ConsumerFieldSchema = SchemaFactory.createForClass(ConsumerProfile);
+export const CustomerFieldSchema = SchemaFactory.createForClass(CustomerProfile);

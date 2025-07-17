@@ -7,8 +7,8 @@ export class Inventory{
     @Prop({ type: Types.ObjectId, ref:'User'})
     userId: Types.ObjectId
 
-    @Prop({type:Types.ObjectId,ref:'Product'})
-    product: Types.ObjectId[]
+    @Prop({type:Types.ObjectId,ref:'InventoryItem'})
+    inventoryItem: Types.ObjectId[]
     
     @Prop()
     totalsale: number

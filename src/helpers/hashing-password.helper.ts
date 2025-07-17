@@ -6,8 +6,8 @@ async function PasswordHash(password: string) {
     return await bcrypt.hash(password,saltRounds)
 }
 
-async function ComparePassword(typedPassword:string,originalPassword:string) {
-    return await bcrypt.compare(typedPassword,originalPassword)
+async function ComparePassword(typedPassword: string, originalPassword: string) {    
+    return bcrypt.compare(typedPassword,originalPassword)
 }
 
 export {ComparePassword,PasswordHash}

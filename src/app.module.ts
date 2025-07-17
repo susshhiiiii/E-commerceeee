@@ -8,6 +8,12 @@ import { RoleGuard } from './guard/role.guard';
 import { SeedModule } from './module/seed/seed.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
+import { CustomerModule } from './module/customer/customer.module';
+import { AddressModule } from './module/address/address.module';
+import { CardModule } from './module/card/card.module';
+import { ProductModule } from './module/product/product.module';
+import { SubCategoryModule } from './module/sub-category/sub-category.module';
+import { CateoryModule } from './module/cateory/cateory.module';
 
 @Module({
   imports: [
@@ -15,7 +21,7 @@ import { EmailModule } from './email/email.module';
     ConfigModule.forRoot({
       isGlobal:true
     }),
-    UserModule, AuthModule, SeedModule, EmailModule],
+    UserModule, AuthModule, SeedModule, EmailModule, CustomerModule, AddressModule, CardModule, ProductModule, SubCategoryModule, CateoryModule],
   controllers: [],
   providers: [
     {

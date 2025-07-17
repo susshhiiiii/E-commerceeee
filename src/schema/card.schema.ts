@@ -4,6 +4,7 @@ import { Status } from "src/enum/status.enum";
 
 @Schema({ timestamps: true })
 export class Card {
+  
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
@@ -19,9 +20,8 @@ export class Card {
   @Prop()
   expiryDate: Date;
 
-  @Prop()
-  createdBy: string;
-
+  @Prop({type:Types.ObjectId,ref:'User'})
+  createdBy: Types.ObjectId;
   @Prop()
   status: Status;
 }

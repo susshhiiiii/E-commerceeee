@@ -4,14 +4,15 @@ import { Status } from "src/enum/status.enum";
 
 @Schema({ timestamps: true })
 export class Address extends Document{
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  userid: Types.ObjectId;
+
+  @Prop()
+  userid: string
 
   @Prop()
   country: string;
 
   @Prop()
-  pincode: string;
+  pincode: number;
 
   @Prop()
   city: string;
@@ -22,8 +23,8 @@ export class Address extends Document{
   @Prop()
   phoneNumber: string;
 
-  @Prop()
-  createdBy: string;
+  @Prop({type:Types.ObjectId,ref:'User'})
+  createdBy: Types.ObjectId;
 
   @Prop()
   status: Status;

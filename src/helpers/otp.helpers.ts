@@ -13,9 +13,8 @@ function VerifyOtp(otp: string, user: User) {
     if (otp != user.otp)
         return false
 
-    if ((new Date().getTime() - user.otpEnteredTime.getTime()/1000>120)) 
-        return false
-    
+    if(((new Date().getTime()-new Date(user.otpEnteredTime).getTime())/1000)>120)
+        return false        
     return true
 }
 export{OtpGenerator,VerifyOtp}
