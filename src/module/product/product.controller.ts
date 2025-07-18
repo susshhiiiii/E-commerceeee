@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Roles } from 'src/decorator/role.decorator';
 import { Role } from 'src/enum/role.enum';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 @ApiTags('Product')
 @Roles(Role.VENDOR)
@@ -15,24 +16,36 @@ export class ProductController {
 
   @Post()
   @ApiOperation({summary:'Api endpoint to add product'})
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  create(@Req() req: Request, @Body() createProductDto: CreateProductDto) {
+    const user=req['user']
+    return this.productService.create(user,createProductDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.productService.findAll();
-  // }
+  @Get()
+  @ApiOperation({summary:'Api endpoint to get all product of logged in vendor'})
+  findAll(@Req() req: Request) {
+    const user=req['user']
+    return this.productService.findAll(user);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.productService.findOne(+id);
-  // }
+  @Get('inventory/:id')
+  @ApiOperation({ summary: 'Api endpoint to get all produts of provided vendor id' })
+  findByInventoryId(@Req()req:Request,@Param('id')id:string) {
+    const user = req['user']
+    return this.productService.findByInventoryId(user,id)
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-  //   return this.productService.update(+id, updateProductDto);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const user=req['user']
+    return this.productService.findOne(user,id);
+  }
+
+  @Patch()
+  update(@Req() req: Request, @Body() updateProductDto: UpdateProductDto) {
+    const user=req['user']
+    return this.productService.update(user,updateProductDto);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 
 export class UpdateSubCategoryDto extends PartialType(CreateSubCategoryDto) {
 
-    @ApiProperty()
+    @ApiProperty({type:String,default:'id'})
+    
     id:Types.ObjectId
 }

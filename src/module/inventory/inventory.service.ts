@@ -4,7 +4,7 @@ import { UpdateInventoryDto } from './dto/update-inventory.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Inventory } from 'src/schema/inventory.schema';
 import { Model } from 'mongoose';
-import { Request, response } from 'express';
+import { Request } from 'express';
 
 @Injectable()
 export class InventoryService {
@@ -59,5 +59,9 @@ export class InventoryService {
 
     await this.inventoryModel.findByIdAndDelete(id)
     return {response:'Inventory has been deleted'}
+  }
+
+  async checkUserWithInventory(id: string,invenotryId:string) {
+    return await this.inventoryModel.exists({userId:id,_id:invenotryId})
   }
 }

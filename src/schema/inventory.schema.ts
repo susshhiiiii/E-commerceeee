@@ -11,7 +11,7 @@ export class Inventory{
     userId: Types.ObjectId
     
     @Prop({default:0})
-    totalsale: number
+    inventorySale: number
     
     @Prop()
     createdBy?: Types.ObjectId

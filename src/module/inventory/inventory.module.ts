@@ -8,5 +8,6 @@ import { Inventory, InventorySchema } from 'src/schema/inventory.schema';
   imports: [MongooseModule.forFeature([{ name: Inventory.name, schema:InventorySchema}])],
   controllers: [InventoryController],
   providers: [InventoryService],
+  exports:[InventoryService]
 })
 export class InventoryModule {}

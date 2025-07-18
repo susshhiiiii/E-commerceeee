@@ -34,7 +34,7 @@ export class SubCategoryController {
 
   @Patch()
   @ApiOperation({ summary: 'Api endpoint to update sub-category by id' })
-  update(@Param() @Body() updateSubCategoryDto: UpdateSubCategoryDto) {
+  update(@Body() updateSubCategoryDto: UpdateSubCategoryDto) {
     return this.subCategoryService.update(updateSubCategoryDto);
   }
 

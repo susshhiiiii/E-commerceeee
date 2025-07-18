@@ -11,7 +11,8 @@ import { OtpGenerator, VerifyOtp } from 'src/helpers/otp.helpers';
 import { EmailService } from 'src/email/email.service';
 import { EmailDto } from 'src/email/dto/email.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
-import { response } from 'express';
+import { Request, response } from 'express';
+import { UserUpdateDto } from './dto/user-update.dto';
 
 @Injectable()
 export class AuthService {
@@ -96,4 +97,22 @@ export class AuthService {
         throw new HttpException('Email and otp doesnot match or otp expired', 404)
         
     }
+
+    async getUser(user:Request) {
+        return await this.userModel.find({_id:user['sub']})
+    }
+
+    async updateUser(user: Request, updateDto:UserUpdateDto) {
+        if (user['sub'] != updateDto.id)
+            throw new UnauthorizedException()
+        const { id, password,...updateReq } = updateDto
+        const hashedPassword=await PasswordHash(password)
+        return await this.userModel.findByIdAndUpdate(id,{password:hashedPassword,...updateReq},{new:true})        
+    }
+
+    async deleteUser(user: Request) {
+        await this.userModel.findByIdAndDelete(user['sub'])
+        return {response:'User has been deleted'}
+    }
+
 }

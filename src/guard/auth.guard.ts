@@ -5,6 +5,7 @@ import { time } from "console";
 import { Request } from "express";
 import { jwtConstant } from "src/auth/auth.constants";
 import { IS_PUBLIC_KEY } from "src/decorator/public.decorator";
+import { UserService } from "src/module/user/user.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate{
@@ -21,6 +22,7 @@ export class AuthGuard implements CanActivate{
 
         const request = context.switchToHttp().getRequest()
         const token = this.extractTokenFromHeader(request)
+
         
         if (!token)
             throw new UnauthorizedException()

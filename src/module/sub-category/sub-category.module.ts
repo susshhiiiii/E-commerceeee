@@ -10,5 +10,6 @@ import { SubCategory, SubCategorySchema } from 'src/schema/sub-category.schema';
   ],
   controllers: [SubCategoryController],
   providers: [SubCategoryService],
+  exports:[SubCategoryService]
 })
 export class SubCategoryModule {}

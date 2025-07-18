@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
 import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -40,5 +40,15 @@ export class SubCategoryService {
 
     await this.subCategoryModel.findByIdAndDelete(id)
     return {response:'Sub-category has been deleted'}
+  }
+
+  async deleteByCategoryId(id: string) {
+    try{
+      await this.subCategoryModel.deleteMany({ category: id }).exec()
+      return true
+    }
+    catch {
+      throw new BadRequestException('Somthing went wrong')
+    }
   }
 }

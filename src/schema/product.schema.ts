@@ -25,11 +25,15 @@ export class Product extends Document {
   @Prop()
   discountedPercentage: number;
 
+  @Prop()
+  discountedPrice:number
+
   @Prop({ type: Types.ObjectId, ref: 'InventoryItem' })
   inventoryId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
   createdBy: Types.ObjectId;
+
   
   @Prop({default:Status.ACTIVE})
   status: Status;
