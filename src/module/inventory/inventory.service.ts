@@ -62,6 +62,6 @@ export class InventoryService {
   }
 
   async checkUserWithInventory(id: string,invenotryId:string) {
-    return await this.inventoryModel.exists({userId:id,_id:invenotryId})
+    return this.inventoryModel.exists({userId:id,_id:invenotryId})
   }
 }

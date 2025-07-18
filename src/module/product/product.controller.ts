@@ -36,19 +36,22 @@ export class ProductController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Api endpoint to get produt by id' })
   findOne(@Param('id') id: string, @Req() req: Request) {
     const user=req['user']
     return this.productService.findOne(user,id);
   }
 
   @Patch()
+  @ApiOperation({ summary: 'Api endpoint to update produt by id' })
   update(@Req() req: Request, @Body() updateProductDto: UpdateProductDto) {
     const user=req['user']
     return this.productService.update(user,updateProductDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.productService.remove(+id);
-  // }
+  @Delete(':id')
+  @ApiOperation({ summary: 'Api endpoint to delete produt by id' })
+  remove(@Req()req:Request,@Param('id') id: string) {
+    return this.productService.remove(req,id);
+  }
 }

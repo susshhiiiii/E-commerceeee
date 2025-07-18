@@ -16,7 +16,7 @@ export class ProductService {
 
   async create(user:Request,createProductDto: CreateProductDto) {
     const { inventoryId, ...productDto } = createProductDto
-    if (!this.inventoryService.checkUserWithInventory(user['sub'],inventoryId.toString()))
+    if (!await this.inventoryService.checkUserWithInventory(user['sub'],inventoryId.toString()))
       throw new UnauthorizedException()
 
     const product = new this.productModel(createProductDto)
@@ -32,7 +32,7 @@ export class ProductService {
 
 
   async findByInventoryId(user: Request, id: string) {
-    if (!this.inventoryService.checkUserWithInventory(user['sub'],id))
+    if (!await this.inventoryService.checkUserWithInventory(user['sub'],id))
       throw new UnauthorizedException()
     return await this.productModel.find({createdBy:user['sub'],inventoryId:id}) 
   }
@@ -47,13 +47,27 @@ export class ProductService {
   }
 
   async update(user: Request, updateProductDto: UpdateProductDto) {
-
-    //Product id 
     const { id, ...updateDto } = updateProductDto
     
+    if (!await this.productModel.findById(id))
+      throw new HttpException('No product with the given id is present', 404)
+
+    if (!await this.inventoryService.checkUserWithInventory(user['sub'],updateDto.inventoryId.toString()))
+      throw new UnauthorizedException()
+    
+    return await this.productModel.findByIdAndUpdate(id,updateDto,{new:true})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(user:Request,id:string) {
+    const product = await this.productModel.findById(id)
+    
+    if (!product)
+      throw new HttpException('No product with the given id is present', 404)
+
+    if (!await this.inventoryService.checkUserWithInventory(user['sub'],product.inventoryId.toString()))
+       throw new UnauthorizedException()
+    
+    await this.productModel.findByIdAndDelete(id)
+    return {response:'Product has been successfully deleted'}
   }
 }
